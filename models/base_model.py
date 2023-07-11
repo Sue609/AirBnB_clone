@@ -18,8 +18,8 @@ class BaseModel:
 
     def __str__(self):
         """ Prints class attributes"""
-        print('[{}] ({}) {}'.format(self.__class__.__name__, self.id, self.to_dict))  
-        return ('[{}] ({}) {}'.format(self.__class__.__name__, self.id, self.to_dict))
+        print('[{}] ({}) {}'.format(self.__class__.__name__, self.id, self.to_dict()))  
+        return ('[{}] ({}) {}'.format(self.__class__.__name__, self.id, self.to_dict()))
 
 
     def save(self):
@@ -31,6 +31,7 @@ class BaseModel:
         """ Returns dict representation of class instance """
         result = self.__dict__.copy()
         result['__class__'] =  self.__class__.__name__
+        result['id'] = self.id
         result['updated_at'] = self.updated_at.isoformat()
         result['created_at'] = self.created_at.isoformat()
         return (result)

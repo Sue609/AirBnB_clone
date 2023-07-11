@@ -10,11 +10,25 @@ class BaseModel:
     """
         Base class
     """
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """ Initialization"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if (len(kwargs) == 0):
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
+        else:
+            for key, value in kwargs.items():
+                if (key == '__class__'):
+                    pass
+                elif (key == 'id'):
+                    self.id = value
+                elif (key == 'created_at'):
+                    self.created_at = datetime.fromisoformat(value)
+                elif (key == 'updated_at'):
+                    self.updated_at = datetime.fromisoformat(value)
+                elif (key == 'name'):
+                    self.name = value
+
 
     def __str__(self):
         """ Prints class attributes"""

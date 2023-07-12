@@ -4,7 +4,6 @@
 """
 from datetime import datetime
 import uuid
-import storage
 
 
 class BaseModel:

@@ -2,13 +2,14 @@
 """
     FileStorage module
 """
-import JSON
+import json
+import models
 
 
 class FileStorage:
-"""
-    Class filestorage: serializes instances to JSON and deserializes JSON files to instances
-"""
+    """
+        Class filestorage: serializes instances to JSON and deserializes JSON files to instances
+    """
     __file_path__ = 'file.json'
     __objects = {}
 
@@ -20,18 +21,18 @@ class FileStorage:
         """ Sets in __objects the obj with key <obj class name>.id """
         key = '{}.{}'.format(obj.__class__.__name__, id(obj))
         value = obj
-        self.__objects[key] = value
+        FileStorage.__objects[key] = value
 
 
     def save(self):
-    """ serializes __objects to a JSON file (__file_path)"""
+        """ serializes __objects to a JSON file (__file_path)"""
         with open(self.__file__path__, 'w') as file:
             serialized_obj = json.dumps(self.__objects, default=lambda o: o.__dict__, indent=4)
             file.write(serialized_obj)
 
 
     def reload(self):
-    """ deserialize the JSON file to __objects """
+        """ deserialize the JSON file to __objects """
         try:
             with open(self.__file_path__, 'r') as file:
                 deserialized_obj = json.load(file)

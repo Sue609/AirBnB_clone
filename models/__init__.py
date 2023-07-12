@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """ Package initialization """
-from models.engine import file_storage
+from models import storage
 
 
 storage = FileStorage()

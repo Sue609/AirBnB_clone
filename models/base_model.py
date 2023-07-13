@@ -4,7 +4,7 @@
 """
 from datetime import datetime
 import uuid
-
+from models import storage
 
 class BaseModel:
     """
@@ -39,8 +39,8 @@ class BaseModel:
     def save(self):
         """ save """
         self.updated_at = datetime.now()
-        models.storage.new(self)
-        models.storage.save()
+        storage.new(self)
+        storage.save()
 
 
     def to_dict(self):

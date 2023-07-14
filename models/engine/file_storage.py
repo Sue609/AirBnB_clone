@@ -47,11 +47,16 @@ class FileStorage:
     def _deserialize_objects(self):
         """
         Method that correctly manages the serialization and
-        deserialization of the user class.
+        deserialization of other classes.
         """
 
         classes = {
                 "User": User,
+                "Place": Place,
+                "State": State,
+                "City": City,
+                "Amenity": Amenity,
+                "Review": Review,
         }
         with open(self.__file_path, "r") as file:
             data = json.load(file)

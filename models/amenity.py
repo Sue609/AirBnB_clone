@@ -2,11 +2,12 @@
 """
 This module introduces a new class called Amenity.
 """
+from models.base_model import BaseModel
 
 
 class Amenity(BaseModel):
     """
-    This new class called amenity with public class attributes.
+    This new class inherits from the baseclass
     """
 
     name = ""

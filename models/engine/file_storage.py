@@ -8,7 +8,8 @@ import models
 
 class FileStorage:
     """
-    Class filestorage: serializes instances to JSON and deserializes JSON files to instances
+    Class filestorage: serializes instances to JSON 
+    and deserializes JSON files to instances
     """
     __file_path__ = 'file.json'
     __objects = {}
@@ -42,3 +43,21 @@ class FileStorage:
                 self.__objects = deserialized_obj
         except FileNotFoundError:
             pass
+
+    def _deserialize_objects(self):
+        """
+        Method that correctly manages the serialization and
+        deserialization of the user class.
+        """
+
+        classes = {
+                "User": User,
+        }
+        with open(self.__file_path, "r") as file:
+            data = json.load(file)
+            for obj_id, obj_attrs in data.items():
+                clas_name = obj_attrs['__class__']
+                if class_name in classes:
+                    self.__objects[obj_id] = classes[class_name](**obj_attrs)
+                else:
+                    self.__objects[obj_id] = BaseModel(**obj_attrs)

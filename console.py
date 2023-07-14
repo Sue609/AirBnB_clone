@@ -7,6 +7,13 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 import models
+from models.users import User
+
+
+class_dict = {
+        "BaseModel": BaseModel,
+        "User": User,
+}
 
 
 classes = ('BaseModel',)
@@ -91,7 +98,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, line):
         """
-        Prints all string representation of all instances based or not on the class name
+        Prints all string representation of all instances 
+        based or not on the class name
         """
         args = line.split(" ")
         obj_list = []

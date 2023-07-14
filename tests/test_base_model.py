@@ -1,7 +1,16 @@
 #!/usr/bin/python3
-from models.base_model import BaseModel
+import os
+import sys
 import unittest
 from datetime import datetime
+
+current_dir = os.getcwd()
+
+root_dir = os.path.dirname(current_dir)
+sys.path.append(root_dir)
+
+from models.base_model import BaseModel
+
 
 class TestBaseModel(unittest.TestCase):
     def setUp(self):

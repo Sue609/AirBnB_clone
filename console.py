@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-The console
+The console module: 
+    HBNBClass to be used in AirBnB console
 """
 import cmd
 from models.base_model import BaseModel
@@ -13,7 +14,8 @@ classes = ('BaseModel',)
 
 class HBNBCommand(cmd.Cmd):
     """
-    This is the entry point of the command line interpreter for the AirBnB_clone
+    The HBNBCommand class that defines the commands to be used on AirBnB console
+    It access and modifies the web app's data
     """
     prompt = '(hbnb) '
 
@@ -155,12 +157,16 @@ class HBNBCommand(cmd.Cmd):
 
 
     def do_EOF(self, line):
-        """Handle the end of file command"""
+        """
+        Handle the end of file command (exits console)
+        """
         return True
 
 
     def emptyline(self):
-        """Empty line does nothing"""
+        """
+        Empty line does nothing
+        """
         return cmd.Cmd.emptyline(self)
 
 

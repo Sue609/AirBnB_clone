@@ -4,6 +4,7 @@ The console module:
     HBNBClass to be used in AirBnB console
 """
 import cmd
+import re
 from models import storage
 from models.base_model import BaseModel
 import models
@@ -29,6 +30,31 @@ class HBNBCommand(cmd.Cmd):
     It access and modifies the web app's data
     """
     prompt = '(hbnb) '
+
+
+    def default(self, line):
+        """
+        Default behavior for cmd module when input is invalid
+        """
+        argdict = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "update": self.do_update,
+            "count": self.do_count
+        }
+        match = re.search(r"\.", line)
+        if match is not None:
+            argl = [line[:match.span()[0]], line[match.span()[1]:]]
+            match = re.search(r"\((.*?)\)", argl[1])
+            if match is not None:
+                command = [argl[1][:match.span()[0]], match.group()[1:-1]]
+                if command[0] in argdict.keys():
+                    call = "{} {}".format(argl[0], command[1])
+                    return argdict[command[0]](call)
+        print("*** Unknown syntax: {}".format(line))
+        return False
+
 
     def do_create(self, line):
         """
@@ -104,6 +130,19 @@ class HBNBCommand(cmd.Cmd):
         print(obj_list)
 
 
+    def do_count(self, line):
+        """
+        Usage: count <class> or <class>.count()
+        Retrieve the number of instances of a given class.
+        """
+        argl = line.split()
+        count = 0
+        for obj in storage.all().values():
+            if argl[0] == obj.__class__.__name__:
+                count += 1
+        print(count)
+
+
     def do_update(self, line):
         """
         Updates an instance based on the class name and id by adding or updating attribute
@@ -144,6 +183,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Handle the end of file command (exits console)
         """
+        print()
         return True
 
 

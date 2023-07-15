@@ -8,10 +8,10 @@ import models
 
 class FileStorage:
     """
-    Class filestorage: serializes instances to JSON 
+    Class filestorage: serializes instances to JSON
     and deserializes JSON files to instances
     """
-    __file_path__ = 'file.json'
+    __file_path = 'file.json'
     __objects = {}
 
     def all(self):
@@ -24,25 +24,23 @@ class FileStorage:
         value = obj
         FileStorage.__objects[key] = value
 
-
     def save(self):
-        """ serializes __objects to a JSON file (__file_path)"""
+        """Serializes __objects to a JSON file (__file_path)."""
         obj_dict = {}
         for key, value in FileStorage.__objects.items():
             obj_dict[key] = value.to_dict()
-        with open(self.__file_path__, 'w') as file:
+        with open(self.__file_path, 'w') as file:
             serialized_obj = json.dumps(obj_dict)
             file.write(serialized_obj)
-
 
     def reload(self):
         """ deserialize the JSON file to __objects """
         try:
-            with open(self.__file_path__, 'r') as file:
+            with open(self.__file_path, 'r') as file:
                 deserialized_obj = json.load(file)
                 self.__objects = deserialized_obj
-        except FileNotFoundError:
-            pass
+        except (FileNotFoundError, json.JSONDecodeError):
+            self.__objects = {}
 
     def _deserialize_objects(self):
         """

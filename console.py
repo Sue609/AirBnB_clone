@@ -18,10 +18,29 @@ from models.review import Review
 class_dict = {
         "BaseModel": BaseModel,
         "User": User,
+        "State": State,
+        "City": City,
+        "Amenity": Amenity,
+        "Place": Place,
+        "Review": Review
 }
 
-
-classes = ('BaseModel',)
+def parse(line):
+    """
+    Parse the input line
+    """
+    c_braces = re.search(r"\{(.*?)\}", line)
+    brackets = re.search(r"\[(.*?)\]", line)
+    if c_braces is None:
+        if brackets is None:
+            return ([i.strip(",") for i in line.split()])
+        else:
+            lis = split(line[:brackets.span()[0]])
+            ret = [i.strip(",") for i in lis]
+            return (ret.append(brackets.group()))
+    else:
+        lis = split(line[:c_braces.span()[0]])
+        return [i.strip(",") for i in lis]
 
 
 class HBNBCommand(cmd.Cmd):
@@ -69,6 +88,7 @@ class HBNBCommand(cmd.Cmd):
             new_instance = class_dict[class_name]()
             new_instance.save()
             print(new_instance.id)
+            storage.save()
         else:
             print("** class doesn't exist **")
 
@@ -77,28 +97,36 @@ class HBNBCommand(cmd.Cmd):
         """
         Prints the string representation of an instance based on the class name and id
         """
-        args = line.split()
-        if len(args) < 2:
-            print("** class name missing **")
-            return
-        class_name = args[0]
-        obj_id = args[1]
-        key = class_name + "." + obj_id
+        args = parse(line)
         objects = storage.all()
-        if key in objects:
-            obj = objects[key]
-            print(obj)
-        else:
+        if len(args) == 0:
+            print("** class name missing **")
+        elif args[0] not in class_dict:
+            print("** class doesn't exist **")
+        elif len(args) == 1:
+            print("** instance id missing **")
+            return
+        elif "{}.{}".format(args[0], args[1]) not in objects:
             print("** no instance found **")
+            return
+        else:
+            print(objects["{}.{}".format(args[0], args[1])])
+
 
     def do_destroy(self, line):
         """
         Deletes an instance based on the class name and id
         """
 
-        args = line.split()
-        if len(args) < 2:
+        args = parse(line)
+        if len(args) == 0:
             print("** class name missing **")
+            return
+        if args[0] not in class_dict:
+            print("** class doesn't exist **")
+            return
+        if len(args) == 1:
+            print("** instance id missing **")
             return
         class_name = args[0]
         obj_id = args[1]
@@ -107,8 +135,6 @@ class HBNBCommand(cmd.Cmd):
         if key in objects:
             del objects[key]
             storage.save()
-        else:
-            print("** no instance found **")
 
 
     def do_all(self, line):
@@ -123,7 +149,8 @@ class HBNBCommand(cmd.Cmd):
             obj_list = [str(obj) for obj in objects.values()]
         elif args[0] in class_dict:
             class_name = args[0]
-            obj_list = [str(obj) for key, obj in objects.items() if key.split(".")[0] == class_name]
+            obj_list = [str(obj) for key, obj in objects.items() 
+                    if key.split(".")[0] == class_name]
         else:
             print("** class doesn't exist **")
             return
@@ -147,30 +174,48 @@ class HBNBCommand(cmd.Cmd):
         """
         Updates an instance based on the class name and id by adding or updating attribute
         """
-
-        args = lene.split()
-        if len(args) < 2:
-            print("** class name missing **")
+        args = parse(line)
+        obj_dict = storage.all()
+        if len(args) == 0:
+            print('** class name missing **')
             return
-        class_name = args[0]
-        obj_id = args[1]
-        key = class_name + "." + obj_id
-        objects = storage.all()
-        if key in objects:
-            obj = objects[key]
-            if len(args) < 3:
-                print("** attribute name missing **")
-                return
-            attribute_name = args[2]
-            if len(args) < 4:
+        if args[0] not in class_dict:
+            print("** class doesn't exist **")
+            return
+        if len(args) == 1:
+            print("** instance id missing **")
+            return
+        if "{}.{}".format(args[0], args[1]) not in obj_dict.keys():
+            print("** no instance found **")
+            return
+        if len(args) == 2:
+            print("** attribute name missing **")
+            return
+        if len(args) == 3:
+            try:
+                type(eval(args[2])) != dict
+            except NameError:
                 print("** value missing **")
                 return
-            value = args[3]
-            setattr(obj, attribute_name, value)
-            storage.save()
-        else:
-            print("** no instance found **")
-        
+
+        if len(args) == 4:
+            obj = obj_dict["{}.{}".format(args[0], args[1])]
+            if args[2] in obj.__class__.__dict__.keys():
+                _type = type(obj.__class__.__dict[args[2]])
+                obj.__dict__[args[2]] = _type(args[3])
+            else:
+                obj.__dict__[args[2]] = args[3]
+        elif type(eval(args[2])) == dict:
+            obj = obj_dict["{}.{}".format(args[0], args[1])]
+            for key, val in eval(args[2]).items():
+                if (key in obj.__class__.__dict__.keys() and 
+                        type(obj.__class__.__dict__[key]) in {int, float, str}):
+                    _type = type(obj.__class__.__dict__[key])
+                    obj.__dict__[key] = _type(val)
+                else:
+                    obj.__dict__[key] = val
+        storage.save()
+
 
     def do_quit(self, line):
         """

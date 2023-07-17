@@ -8,12 +8,6 @@ import os
 import sys
 import io
 from unittest.mock import patch
-
-current_dir = os.getcwd()
-
-root_dir = os.path.dirname(current_dir)
-sys.path.append(root_dir)
-
 from models.user import User
 from models.city import City
 from models.amenity import Amenity
@@ -24,6 +18,11 @@ from models import storage
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from console import HBNBCommand
+
+current_dir = os.getcwd()
+
+root_dir = os.path.dirname(current_dir)
+sys.path.append(root_dir)
 
 
 class TestHBNBCommand(unittest.TestCase):
@@ -86,7 +85,9 @@ class TestHBNBCommand(unittest.TestCase):
         with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
             obj = BaseModel()
             obj.save()
-            self.console.onecmd('update BaseModel {} name "Test"'.format(obj.id))
+            self.console.onecmd(
+                    'update BaseModel {} name "Test"'.format(obj.id)
+                )
 
     def test_prompt(self):
         """ test correct prompt """
@@ -95,4 +96,3 @@ class TestHBNBCommand(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

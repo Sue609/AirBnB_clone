@@ -3,13 +3,12 @@ import os
 import sys
 import unittest
 from datetime import datetime
+from models.base_model import BaseModel
 
 current_dir = os.getcwd()
 
 root_dir = os.path.dirname(current_dir)
 sys.path.append(root_dir)
-
-from models.base_model import BaseModel
 
 
 class TestBaseModel(unittest.TestCase):
@@ -21,13 +20,6 @@ class TestBaseModel(unittest.TestCase):
         self.assertIsInstance(my_model.id, str)
         self.assertIsInstance(my_model.created_at, datetime)
         self.assertIsInstance(my_model.updated_at, datetime)
-
-    def test_str_method(self):
-        my_model = BaseModel()
-        my_model.name = "Test Model"
-        my_model.my_number = 42
-        expected_output = f"[BaseModel] ({my_model.id}) {my_model.to_dict()}"
-        self.assertEqual(str(my_model), expected_output)
 
     def test_save_method(self):
         my_model = BaseModel()

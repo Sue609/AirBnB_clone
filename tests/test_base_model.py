@@ -15,6 +15,24 @@ class TestBaseModel(unittest.TestCase):
     def setUp(self):
         self.base_model = BaseModel()
 
+    def test_to_dict(self):
+        """
+        Create an instance of BaseModel
+        Call the to_dict method
+        """
+        model = BaseModel()
+        model_dict = model.to_dict()
+
+    def test_created_at(self):
+        """
+        You can use the `isinstance` function to check the type
+        """
+        model = BaseModel()
+
+    def test_str(self):
+        model = BaseModel()
+        str_repr = str(model)
+
     def test_object_creation(self):
         my_model = BaseModel()
         self.assertIsInstance(my_model.id, str)

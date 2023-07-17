@@ -230,8 +230,7 @@ class HBNBCommand(cmd.Cmd):
         """
         Empty line does nothing
         """
-        return cmd.Cmd.emptyline(self)
-
+        return True
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()

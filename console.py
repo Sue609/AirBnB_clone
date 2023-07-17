@@ -106,10 +106,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         elif len(args) == 1:
             print("** instance id missing **")
-            return
         elif "{}.{}".format(args[0], args[1]) not in objects:
             print("** no instance found **")
-            return
         else:
             print(objects["{}.{}".format(args[0], args[1])])
 

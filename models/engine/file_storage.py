@@ -3,7 +3,7 @@
     FileStorage module
 """
 import json
-import models
+from models.base_model import BaseModel
 
 
 class FileStorage:
@@ -25,22 +25,24 @@ class FileStorage:
         FileStorage.__objects[key] = value
 
     def save(self):
-        """Serializes __objects to a JSON file (__file_path)."""
-        obj_dict = {}
-        for key, value in FileStorage.__objects.items():
-            obj_dict[key] = value.to_dict()
-        with open(self.__file_path, 'w') as file:
-            serialized_obj = json.dumps(obj_dict)
-            file.write(serialized_obj)
+        """Serialize __objects to the JSON file __file_path."""
+        objdict = {obj: self.__objects[obj].to_dict() for obj in self.__objects.keys()}
+        with open(self.__file_path, "w") as f:
+            json.dump(objdict, f)
 
     def reload(self):
-        """ deserialize the JSON file to __objects """
+        """Deserialize the JSON file __file_path to __objects, if it exists."""
         try:
-            with open(self.__file_path, 'r') as file:
-                deserialized_obj = json.load(file)
-                self.__objects = deserialized_obj
-        except (FileNotFoundError, json.JSONDecodeError):
-            self.__objects = {}
+            with open(self.__file_path) as f:
+                objdict = json.load(f)
+                for o in objdict.values():
+                    cls_name = o["__class__"]
+                    del o["__class__"]
+                    self.new(eval(cls_name)(**o))
+        except FileNotFoundError:
+            objdict = {}
+            with open(self.__file_path, "w") as f:
+                json.dump(objdict, f)
 
     def _deserialize_objects(self):
         """

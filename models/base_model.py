@@ -4,13 +4,16 @@ The base_model module of the AirBnB webapp
 """
 from datetime import datetime
 import uuid
-from models import storage
+import models
 
 
 class BaseModel:
     """
     BaseModel the Main class from which all other classes will inherit
     """
+
+    dt_format = "%Y-%m-%dT%H:%M:%S.%f"
+
     def __init__(self, *args, **kwargs):
         """
         Initializes the BaseModel class
@@ -18,19 +21,22 @@ class BaseModel:
             *args: Variable length of arguement list.
             **kwargs: Arbitrary keyword arguements.
         """
-        if kwargs:
-            for key, value in kwargs.items():
-                if key != '__class__':
-                    if key in ['created_at', 'updated_at']:
-                        value = datetime.strptime(
-                                value, "%Y-%m-%dT%H:%M:%S.%f"
-                        )
-                    setattr(self, key, value)
-        else:
+        if 'id' not in kwargs:
             self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
-            storage.new(self)
+            self.created_at = self.updated_at = datetime.utcnow()
+        else:
+            kwargs['created_at'] = datetime.strptime(
+                kwargs['created_at'], self.dt_format
+            )
+            kwargs['updated_at'] = datetime.strptime(
+                kwargs['updated_at'], self.dt_format
+            )
+            kwargs.pop('__class__', None)
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+        self.storage = kwargs.get('storage', None)
+        if self.storage:
+            self.storage.new(self)
 
     def __str__(self):
         """
@@ -41,23 +47,17 @@ class BaseModel:
         )
 
     def save(self):
-        """
-         Updates the public instance attribute 'updated_at'
-         with the current datetime.
-        """
-        self.updated_at = datetime.now()
-        storage.save()
+        """Delete the current instance from __objects, if it exists."""
+        key = '{}.{}'.format(self.__class__.__name__, self.id)
+        models.storage.all()[key] = self
+        models.storage.save()
 
     def to_dict(self):
         """
         Returns dict representation of a class instance
         """
         result = self.__dict__.copy()
-        result['__class__'] = self.__class__.__name__
+        result['__class__'] = type(self).__name__
         result['updated_at'] = self.updated_at.isoformat()
         result['created_at'] = self.created_at.isoformat()
-        return (result)
-
-
-if __name__ == '__main__':
-    unittest.main()
+        return result

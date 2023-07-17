@@ -34,9 +34,6 @@ class BaseModel:
             kwargs.pop('__class__', None)
             for key, value in kwargs.items():
                 setattr(self, key, value)
-        self.storage = kwargs.get('storage', None)
-        if self.storage:
-            self.storage.new(self)
 
     def __str__(self):
         """

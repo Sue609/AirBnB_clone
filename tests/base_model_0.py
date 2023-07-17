@@ -3,6 +3,7 @@
 import unittest
 from models.base_model import BaseModel
 
+
 class TestSaveMethod(unittest.TestCase):
     def test_save(self):
         bm = BaseModel()

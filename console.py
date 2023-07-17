@@ -169,47 +169,43 @@ class HBNBCommand(cmd.Cmd):
         and id by adding or updating attribute
         """
         args = parse(line)
-        obj_dict = storage.all()
+        objects = storage.all()
         if len(args) == 0:
-            print('** class name missing **')
+            print("** class name missing **")
             return
-        if args[0] not in class_dict:
+        class_name = args[0]
+        if class_name not in class_dict:
             print("** class doesn't exist **")
             return
         if len(args) == 1:
             print("** instance id missing **")
             return
-        if "{}.{}".format(args[0], args[1]) not in obj_dict.keys():
+        instance_id = args[1]
+        obj_key = "{}.{}".format(class_name, instance_id)
+        if obj_key not in objects:
             print("** no instance found **")
             return
         if len(args) == 2:
             print("** attribute name missing **")
             return
+        attribute_name = args[2]
         if len(args) == 3:
-            try:
-                type(eval(args[2])) != dict
-            except NameError:
-                print("** value missing **")
-                return
-
-        if len(args) == 4:
-            obj = obj_dict["{}.{}".format(args[0], args[1])]
-            if args[2] in obj.__class__.__dict__.keys():
-                _type = type(obj.__class__.__dict[args[2]])
-                obj.__dict__[args[2]] = _type(args[3])
-            else:
-                obj.__dict__[args[2]] = args[3]
-        elif type(eval(args[2])) == dict:
-            obj = obj_dict["{}.{}".format(args[0], args[1])]
-            for key, val in eval(args[2]).items():
-                if (key in obj.__class__.__dict__.keys()
-                        and type(obj.__class__.__dict__[key])
-                        in {int, float, str}):
-                    _type = type(obj.__class__.__dict__[key])
-                    obj.__dict__[key] = _type(val)
-                else:
-                    obj.__dict__[key] = val
-        storage.save()
+            print("** value missing **")
+            return
+        attribute_value = args[3]
+        obj = objects[obj_key]
+        if attribute_name in ['id', 'created_at', 'updated_at']:
+            return
+        attr_type = class_dict[class_name].__dict__[attribute_name]
+        try:
+            if attr_type is int:
+                attribute_value = int(attribute_value)
+            elif attr_type is float:
+                attribute_value = float(attribute_value)
+        except ValueError:
+            pass
+        setattr(obj, attribute_name, attribute_value)
+        obj.save()
 
     def do_quit(self, line):
         """

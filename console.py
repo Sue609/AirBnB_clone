@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-The console module: 
-    HBNBClass to be used in AirBnB console
+The console module:
+HBNBClass to be used in AirBnB console
 """
 import cmd
 import re
@@ -25,6 +25,7 @@ class_dict = {
         "Review": Review
 }
 
+
 def parse(line):
     """
     Parse the input line
@@ -45,11 +46,11 @@ def parse(line):
 
 class HBNBCommand(cmd.Cmd):
     """
-    The HBNBCommand class that defines the commands to be used on AirBnB console
+    The HBNBCommand class that defines the commands
+    to be used on AirBnB console
     It access and modifies the web app's data
     """
     prompt = '(hbnb) '
-
 
     def default(self, line):
         """
@@ -74,10 +75,10 @@ class HBNBCommand(cmd.Cmd):
         print("*** Unknown syntax: {}".format(line))
         return False
 
-
     def do_create(self, line):
         """
-        Creates an instance of BaseModel, saves it as a JSON file and prints the id
+        Creates an instance of BaseModel, saves it as a JSON file
+        and prints the id
         """
         args = line.split()
         if len(args) == 0:
@@ -92,10 +93,10 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
-
     def do_show(self, line):
         """
-        Prints the string representation of an instance based on the class name and id
+        Prints the string representation of an instance
+        based on the class name and id
         """
         args = parse(line)
         objects = storage.all()
@@ -112,12 +113,10 @@ class HBNBCommand(cmd.Cmd):
         else:
             print(objects["{}.{}".format(args[0], args[1])])
 
-
     def do_destroy(self, line):
         """
         Deletes an instance based on the class name and id
         """
-
         args = parse(line)
         if len(args) == 0:
             print("** class name missing **")
@@ -136,26 +135,23 @@ class HBNBCommand(cmd.Cmd):
             del objects[key]
             storage.save()
 
-
     def do_all(self, line):
         """
-        Prints all string representation of all instances 
+        Prints all string representation of all instances
         based or not on the class name
         """
-
         args = line.split()
         objects = storage.all()
         if len(args) == 0:
             obj_list = [str(obj) for obj in objects.values()]
         elif args[0] in class_dict:
             class_name = args[0]
-            obj_list = [str(obj) for key, obj in objects.items() 
-                    if key.split(".")[0] == class_name]
+            obj_list = [str(obj) for key, obj in objects.items()
+                        if key.split(".")[0] == class_name]
         else:
             print("** class doesn't exist **")
             return
         print(obj_list)
-
 
     def do_count(self, line):
         """
@@ -169,10 +165,10 @@ class HBNBCommand(cmd.Cmd):
                 count += 1
         print(count)
 
-
     def do_update(self, line):
         """
-        Updates an instance based on the class name and id by adding or updating attribute
+        Updates an instance based on the class name
+        and id by adding or updating attribute
         """
         args = parse(line)
         obj_dict = storage.all()
@@ -208,14 +204,14 @@ class HBNBCommand(cmd.Cmd):
         elif type(eval(args[2])) == dict:
             obj = obj_dict["{}.{}".format(args[0], args[1])]
             for key, val in eval(args[2]).items():
-                if (key in obj.__class__.__dict__.keys() and 
-                        type(obj.__class__.__dict__[key]) in {int, float, str}):
+                if (key in obj.__class__.__dict__.keys()
+                        and type(obj.__class__.__dict__[key])
+                        in {int, float, str}):
                     _type = type(obj.__class__.__dict__[key])
                     obj.__dict__[key] = _type(val)
                 else:
                     obj.__dict__[key] = val
         storage.save()
-
 
     def do_quit(self, line):
         """
@@ -223,14 +219,12 @@ class HBNBCommand(cmd.Cmd):
         """
         return True
 
-
     def do_EOF(self, line):
         """
         Handle the end of file command (exits console)
         """
         print()
         return True
-
 
     def emptyline(self):
         """

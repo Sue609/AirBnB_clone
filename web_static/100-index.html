@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link rel="icon" type="image/png" href="images/icon.png">
-    <link rel="stylesheet" href="styles/3-header.css">
-    <link rel="stylesheet" href="styles/3-footer.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/4-common.css">
+    <link rel="stylesheet" href="styles/3-header.css">
     <link rel="stylesheet" href="styles/6-filters.css">
-    <link rel="stylesheet" href="styles/8-places.css">
+    <link rel="stylesheet" href="styles/100-places.css">
+    <link rel="icon" type="image/png" href="images/icon.png">
+    <link rel="stylesheet" href="styles/3-footer.css">
+    
 </head>
+
 <body>
     <header>
-        <img src="images/logo.png" class="logo">
+        <div class="image-logo" style="background-image: url('images/logo.png');"></div>
     </header>
     <div class="container">
         <section class="filters">
             <div class="locations">
                 <h3>States</h3>
-                <h4>Arizona, New york</h4>
+                <h4>Arizona, New York</h4>
                 <ul class="popover">
                     <li>
                         <h2>Arizona:</h2>
                         <ul>
                             <li>Mesa</li>
-                            <li>Pheonix</li>
+                            <li>Phoenix</li>
                             <li>Scottsdale</li>
                         </ul>
                     </li>
                     <li>
-                        <h2>NewYork:</h2>
+                        <h2>New York:</h2>
                         <ul>
                             <li>Newburgh</li>
                             <li>Albany</li>
@@ -38,10 +43,10 @@
             </div>
             <div class="amenities">
                 <h3>Amenities</h3>
-                <h4>Internet, balcony</h4>
+                <h4>Internet, Balcony</h4>
                 <ul class="popover">
                     <li>Kitchen</li>
-                    <li>Ensuit bathroom</li>
+                    <li>Ensuite bathroom</li>
                     <li>Sauna</li>
                 </ul>
             </div>
@@ -56,37 +61,76 @@
                 <div class="price_by_night">$100</div>
                 <div class="information">
                     <div class="max_guest">
-                        <div class="icon_bath"></div>
-                    </div>
-                    <div class="number_rooms">
                         <div class="icon_group"></div>
                     </div>
-                    <div class="number_bathrooms">
-                    <div class="icon_group"></div>
+                    <div class="number_rooms">
+                        <div class="icon_bed"></div>
                     </div>
-                    <div class="user"><Strong>Owner:</Strong> Susan Kamau</div>
-                    <div class="decription">Enjoy the elegance of a by-gone era while staying in this Art Deco home. Beautifully decorated and featuring a sweeping staircase,
+                    <div class="number_bathrooms">
+                        <div class="icon_bathroom"></div>
+                    </div>
+                    <div class="user"><strong>Owner:</strong> Susan Kamau</div>
+                    <div class="description">Enjoy the elegance of a by-gone era while staying in this Art Deco home. Beautifully decorated and featuring a sweeping staircase,
                         original stained-glass windows, period furniture, and a stunningly unique black-and-white tiled bathroom.</div>
-
                 </div>
-            </article>            
+                <div class="amenities">
+                    <h2>Amenities</h2>
+                    <ul>
+                        <div class="image-container" style="background-image: url('images/icon_pets.png');"></div>
+                        <li><p>Pet friendly</p></li>
+                        <div class="image-container" style="background-image: url('images/icon_tv.png');"></div>
+                        <li><span class="tv"></span>TV</li>
+                        <div class="image-container" style="background-image: url('images/icon_wifi.png');"></div>
+                        <li><span class="wifi"></span>Wifi</li>
+                    </ul>
+                </div>
+                <div class="reviews">
+                    <h2>Reviews</h2>
+                <ul>
+                    <li>
+                        <h3>From Bob Dylan the 27th January 2017</h3>
+                        <p>Great place to stay, highly recommended!</p>
+                    </li>
+                </ul>
+                </div>
+            </article>
             <article class="condo">
                 <h2>Condo</h2>
                 <div class="price_by_night">$300</div>
                 <div class="information">
                     <div class="max_guest">
-                        <div class="icon_bath"></div>
-                    </div>
-                    <div class="number_rooms">
                         <div class="icon_group"></div>
                     </div>
-                    <div class="icon_group"></div>
-                    <div class="number_bathrooms">
+                    <div class="number_rooms">
+                        <div class="icon_bed"></div>
                     </div>
-                    <div class="user"><Strong>Owner:</Strong> Susan Kamau</div>
-                    <div class="decription">Enjoy the elegance of a by-gone era while staying in this Art Deco home. Beautifully decorated and featuring a sweeping staircase,
+                    <div class="number_bathrooms">
+                        <div class="icon_bathroom"></div>
+                    </div>
+                    <div class="user"><strong>Owner:</strong> Susan Kamau</div>
+                    <div class="description">Enjoy the elegance of a by-gone era while staying in this Art Deco home. Beautifully decorated and featuring a sweeping staircase,
                         original stained-glass windows, period furniture, and a stunningly unique black-and-white tiled bathroom.</div>
-
+                </div>
+                <div class="amenities">
+                    <h2>Amenities</h2>
+                    <ul>
+                    <div class="image-container" style="background-image: url('images/icon_pets.png');"></div>
+                    <li><span class="icon pet-friendly"></span>Pet friendly</li>
+                    <div class="image-container" style="background-image: url('images/icon_tv.png');"></div>
+                    <li><span class="icon tv"></span>TV</li>
+                    <div class="image-container" style="background-image: url('images/icon_wifi.png');"></div>
+                    <li><span class="icon wifi"></span>Wifi</li>
+                    </ul>
+                </div>
+                <div class="reviews">
+                    <h2>Reviews</h2>
+                <ul>
+                    <li>
+                        <h3>From Bob Dylan the 27th January 2017</h3>
+                        <p>Great place to stay, highly recommended!</p>
+                    </li>
+                </ul>
+                </div>
             </article>
         </div>
     </section>
@@ -94,4 +138,5 @@
         Best School
     </footer>
 </body>
+
 </html>
